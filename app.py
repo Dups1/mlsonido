@@ -7,6 +7,7 @@ import tempfile
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
 # Lazy load del modelo en primer request
@@ -32,6 +33,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="DeepFilterNet3 API", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
