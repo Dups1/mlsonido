@@ -2,6 +2,7 @@
 API para mejora de audio con DeepFilterNet3. Uso: POST /enhance con multipart WAV.
 """
 import io
+import logging
 import os
 import tempfile
 from contextlib import asynccontextmanager
@@ -84,6 +85,7 @@ def enhance_audio(file: UploadFile = File(...)):
             headers={"Content-Disposition": "attachment; filename=enhanced.wav"},
         )
     except Exception as e:
+        logging.exception("enhance failed: %s", e)
         raise HTTPException(500, str(e)) from e
     finally:
         try:
