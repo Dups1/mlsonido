@@ -5,8 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# deepfilternet init_df() usa git para el logger
-RUN apt-get update && apt-get install -y --no-install-recommends git \
+# git para deepfilternet logger; sox para backend torchaudio (leer WAV)
+RUN apt-get update && apt-get install -y --no-install-recommends git sox libsox-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
