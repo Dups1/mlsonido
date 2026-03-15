@@ -1,6 +1,7 @@
 # API
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
 
 # PyTorch CPU (evita CUDA en Render; esta linea debe ir antes de torch)
 --extra-index-url https://download.pytorch.org/whl/cpu
