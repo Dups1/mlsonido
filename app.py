@@ -83,15 +83,24 @@ def enhance_audio(file: UploadFile = File(...)):
         enhanced = enhance(model, df_state, audio, pad=True)
         enhanced = resample(enhanced.cpu(), _MODEL_SR, orig_sr)
 
-        buf = io.BytesIO()
         import torch
         import torchaudio as ta
         if enhanced.dtype != torch.float32:
             enhanced = enhanced.float() / (1 << 15)
-        ta.save(buf, enhanced, orig_sr, format="wav")
-        buf.seek(0)
+
+        # torchaudio.save a BytesIO no siempre tiene backend; usar archivo temporal .wav
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_out:
+            out_path = tmp_out.name
+        ta.save(out_path, enhanced, orig_sr, format="wav")
+        with open(out_path, "rb") as f:
+            data = f.read()
+        try:
+            os.unlink(out_path)
+        except OSError:
+            pass
+
         return Response(
-            content=buf.getvalue(),
+            content=data,
             media_type="audio/wav",
             headers={"Content-Disposition": "attachment; filename=enhanced.wav"},
         )
