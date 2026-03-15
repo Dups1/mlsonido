@@ -2,7 +2,8 @@
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 
-# DeepFilterNet (PyTorch CPU; para GPU usa el index de PyTorch CUDA)
+# PyTorch CPU (evita CUDA en Render; esta linea debe ir antes de torch)
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.0.0
 torchaudio>=2.0.0
 deepfilternet>=0.5.6
