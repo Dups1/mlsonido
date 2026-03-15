@@ -3,8 +3,8 @@ fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 python-multipart>=0.0.6
 
-# PyTorch CPU (evita CUDA en Render; esta linea debe ir antes de torch)
+# PyTorch CPU; torchaudio 2.2+ quita torchaudio.backend (deepfilternet lo usa)
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch>=2.0.0
-torchaudio>=2.0.0
+torch>=2.0.0,<2.2
+torchaudio>=2.0.0,<2.2
 deepfilternet>=0.5.6
