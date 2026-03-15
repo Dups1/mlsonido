@@ -21,7 +21,18 @@ def get_model():
     global _model, _df_state
     if _model is None:
         from df import init_df
-        _model, _df_state, _, _ = init_df()
+        result = init_df()
+        # Compatibilidad con distintas versiones de DeepFilterNet:
+        # algunas devuelven (model, state, meta), otras (model, state, meta, config).
+        if isinstance(result, (list, tuple)):
+            if len(result) == 4:
+                _model, _df_state, _, _ = result
+            elif len(result) == 3:
+                _model, _df_state, _ = result
+            else:
+                raise RuntimeError(f"init_df devolvio {len(result)} valores, se esperaban 3 o 4")
+        else:
+            raise RuntimeError("init_df devolvio un tipo inesperado")
     return _model, _df_state
 
 
